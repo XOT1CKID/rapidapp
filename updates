@@ -1,0 +1,49 @@
+import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QPushButton, QWidget
+from PyQt5.QtCore import QUrl
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtGui import QIcon
+
+class EmbeddedBrowser(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.init_ui()
+
+    def init_ui(self):
+        self.setWindowTitle("Rapid Beta")
+        self.setGeometry(100, 100, 800, 600)
+
+        # Set the window icon
+        self.setWindowIcon(QIcon('https://cdn.discordapp.com/attachments/862781294949171220/1170793167017213983/icon.ico?ex=655a551b&is=6547e01b&hm=f17193f527f6de2f236278b7092a56af1da4fb55a87b8c183fc1462c8b05149e&'))  # Replace 'path_to_your_icon/icon.ico' with your icon file
+
+        central_widget = QWidget()
+        self.setCentralWidget(central_widget)
+
+        self.layout = QVBoxLayout(central_widget)
+
+        self.browser = QWebEngineView()
+        self.layout.addWidget(self.browser)
+
+        self.button_webhosting = QPushButton("Web Hosting Login")
+        self.button_gamepanel = QPushButton("Game Panel Login")
+        self.button_vpspanel = QPushButton("VPS Panel Login")
+
+        self.button_webhosting.clicked.connect(lambda: self.open_webview("https://chi-1.webservercp.com:2083"))
+        self.button_gamepanel.clicked.connect(lambda: self.open_webview("https://panel.rapidhosting.cloud"))
+        self.button_vpspanel.clicked.connect(lambda: self.open_webview("https://vps.rapidhosting.cloud:4083"))
+
+        self.layout.addWidget(self.button_webhosting)
+        self.layout.addWidget(self.button_gamepanel)
+        self.layout.addWidget(self.button_vpspanel)
+
+        self.browser.load(QUrl("https://rapidhosting.cloud"))
+
+    def open_webview(self, url):
+        self.browser.load(QUrl(url))
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    browser = EmbeddedBrowser()
+    browser.show()
+    sys.exit(app.exec_())
